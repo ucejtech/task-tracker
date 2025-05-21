@@ -16,31 +16,43 @@ jobs:
       COMPOSE_FILE: ${{ github.ref_name == 'main' && 'docker-compose-production.yml' || 'docker-compose-staging.yml' }}
       EC2_HOST: ${{ github.ref_name == 'main' && secrets.PRODUCTION_HOST || secrets.STAGING_HOST }}
       EC2_USERNAME: ${{ secrets.EC2_USERNAME }}
+      PROJECT_DIR: vue-task-tracker
+      LOG_FILE: deploy-${{ github.ref_name }}.log
 
     steps:
-      - name: Checkout code
+      - name: ✅ Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up SSH
+      - name: 🔐 Set up SSH agent
         uses: webfactory/ssh-agent@v0.7.0
         with:
           ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
 
-      - name: Deploy to EC2
+      - name: 📦 Deploy to EC2 (${{ github.ref_name }})
         run: |
-          # Add EC2 host to known hosts
+          echo "🔗 Connecting to EC2 at $EC2_HOST..."
+
           mkdir -p ~/.ssh
           ssh-keyscan -H "$EC2_HOST" >> ~/.ssh/known_hosts
 
-          # SSH into EC2 and deploy
-          ssh "$EC2_USERNAME@$EC2_HOST" <<EOF
-            cd ~/vue-task-tracker
+          ssh -o StrictHostKeyChecking=no "$EC2_USERNAME@$EC2_HOST" <<EOF
+            set -e
 
+            echo "🚀 Deploying branch $BRANCH_NAME to $EC2_HOST"
+
+            cd ~/$PROJECT_DIR
+
+            echo "📥 Pulling latest code from $BRANCH_NAME"
+            git fetch origin
+            git checkout $BRANCH_NAME
             git pull origin $BRANCH_NAME
 
+            echo "📦 Building and starting containers using $COMPOSE_FILE"
             docker compose -f $COMPOSE_FILE down
             docker compose -f $COMPOSE_FILE up -d --build
 
+            echo "📊 Container status:"
             docker compose ps
-          EOF
 
+            echo "✅ Deployment to $BRANCH_NAME complete on $(date)" >> $LOG_FILE
+          EOF
