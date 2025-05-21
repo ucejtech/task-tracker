@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router';
 
 const routes = [
   {
@@ -25,9 +25,9 @@ const routes = [
     path: '/tasks/:id/edit',
     name: 'EditTask',
     component: () => import('../views/TaskFormView.vue'),
-    props: route => ({ 
-      isEdit: true, 
-      taskId: parseInt(route.params.id) 
+    props: (route: any) => ({
+      isEdit: true,
+      taskId: parseInt(route.params.id)
     })
   },
   {
@@ -35,12 +35,12 @@ const routes = [
     name: 'Labels',
     component: () => import('../views/LabelsView.vue')
   }
-]
+];
 
 const router = createRouter({
   history: createWebHistory(),
   routes,
   linkActiveClass: 'active-link'
-})
+});
 
-export default router
+export default router;

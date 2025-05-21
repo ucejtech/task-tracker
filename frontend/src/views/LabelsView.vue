@@ -21,7 +21,7 @@ const colorOptions = [
   '#64D2FF', // Light Blue
   '#FFD60A', // Yellow
   '#FF375F', // Pink
-  '#5E5CE6'  // Indigo
+  '#5E5CE6' // Indigo
 ];
 
 onMounted(async () => {
@@ -46,18 +46,18 @@ const createLabel = async () => {
     });
     return;
   }
-  
+
   try {
     await labelStore.createLabel({
       name: labelName.value.trim(),
       color: labelColor.value
     });
-    
+
     notificationsStore.addNotification({
       type: 'success',
       message: 'Label created successfully'
     });
-    
+
     labelName.value = '';
     labelColor.value = '#0A84FF';
   } catch (error) {
@@ -68,7 +68,7 @@ const createLabel = async () => {
   }
 };
 
-const startEditLabel = (label) => {
+const startEditLabel = (label: any) => {
   editingLabelId.value = label.id;
   labelName.value = label.name;
   labelColor.value = label.color;
@@ -78,19 +78,19 @@ const updateLabel = async () => {
   if (!editingLabelId.value || !labelName.value.trim()) {
     return;
   }
-  
+
   try {
     await labelStore.updateLabel({
       id: editingLabelId.value,
       name: labelName.value.trim(),
       color: labelColor.value
     });
-    
+
     notificationsStore.addNotification({
       type: 'success',
       message: 'Label updated successfully'
     });
-    
+
     cancelEdit();
   } catch (error) {
     notificationsStore.addNotification({
@@ -100,19 +100,19 @@ const updateLabel = async () => {
   }
 };
 
-const confirmDelete = (labelId) => {
+const confirmDelete = (labelId: number) => {
   confirmDeleteId.value = labelId;
 };
 
-const deleteLabel = async (labelId) => {
+const deleteLabel = async (labelId: number) => {
   try {
     await labelStore.deleteLabel(labelId);
-    
+
     notificationsStore.addNotification({
       type: 'success',
       message: 'Label deleted successfully'
     });
-    
+
     confirmDeleteId.value = null;
   } catch (error) {
     notificationsStore.addNotification({
@@ -136,25 +136,25 @@ const cancelEdit = () => {
 <template>
   <div class="labels-page">
     <h1>Manage Labels</h1>
-    
+
     <div class="create-label-form">
       <h2>{{ editingLabelId ? 'Edit Label' : 'Create New Label' }}</h2>
-      
+
       <div class="form-group">
         <label for="labelName">Name</label>
-        <input 
-          id="labelName" 
-          v-model="labelName" 
-          type="text" 
-          placeholder="Label name" 
+        <input
+          id="labelName"
+          v-model="labelName"
+          type="text"
+          placeholder="Label name"
           :disabled="loading"
         />
       </div>
-      
+
       <div class="form-group">
         <label>Color</label>
         <div class="color-options">
-          <div 
+          <div
             v-for="color in colorOptions"
             :key="color"
             class="color-option"
@@ -164,12 +164,12 @@ const cancelEdit = () => {
           ></div>
         </div>
       </div>
-      
+
       <div class="label-preview">
         <span>Preview:</span>
-        <div 
+        <div
           class="preview-badge"
-          :style="{ 
+          :style="{
             backgroundColor: labelColor + '40',
             color: labelColor
           }"
@@ -177,78 +177,72 @@ const cancelEdit = () => {
           {{ labelName || 'Label Name' }}
         </div>
       </div>
-      
+
       <div class="form-actions">
-        <button 
+        <button
           v-if="editingLabelId"
-          type="button" 
+          type="button"
           class="secondary"
           @click="cancelEdit"
         >
           Cancel
         </button>
-        
-        <button 
+
+        <button
           v-if="editingLabelId"
           @click="updateLabel"
           :disabled="!labelName.trim()"
         >
           Update Label
         </button>
-        
-        <button 
-          v-else
-          @click="createLabel"
-          :disabled="!labelName.trim()"
-        >
+
+        <button v-else @click="createLabel" :disabled="!labelName.trim()">
           Create Label
         </button>
       </div>
     </div>
-    
+
     <div class="labels-list-section">
       <h2>Your Labels</h2>
-      
-      <div v-if="loading" class="loading-message">
-        Loading labels...
-      </div>
-      
+
+      <div v-if="loading" class="loading-message">Loading labels...</div>
+
       <div v-else-if="labelStore.labels.length === 0" class="empty-state">
         <p>No labels found. Create your first label above.</p>
       </div>
-      
+
       <div v-else class="labels-list">
-        <div 
+        <div
           v-for="label in labelStore.labels"
           :key="label.id"
           class="label-item"
         >
           <div class="label-info">
-            <div 
+            <div
               class="label-color"
               :style="{ backgroundColor: label.color }"
             ></div>
             <span class="label-name">{{ label.name }}</span>
           </div>
-          
+
           <div class="label-actions">
-            <button 
+            <button
               v-if="confirmDeleteId === label.id"
               class="danger sm"
               @click="deleteLabel(label.id)"
             >
               Confirm
             </button>
-            
-            <button 
+
+            <button
               v-if="confirmDeleteId === label.id"
               class="secondary sm"
               @click="cancelDelete"
             >
               Cancel
             </button>
-            
-            <button 
+
+            <button
               v-if="confirmDeleteId !== label.id"
               class="secondary sm"
               @click="startEditLabel(label)"
@@ -256,8 +250,8 @@ const cancelEdit = () => {
             >
               Edit
             </button>
-            
-            <button 
+
+            <button
               v-if="confirmDeleteId !== label.id"
               class="danger sm"
               @click="confirmDelete(label.id)"
@@ -301,7 +295,8 @@ const cancelEdit = () => {
   height: 32px;
   border-radius: 50%;
   cursor: pointer;
-  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  transition: transform var(--transition-fast),
+    box-shadow var(--transition-fast);
 }
 
 .color-option:hover {
@@ -383,23 +378,26 @@ button.sm {
   padding: 4px 8px;
 }
 
-.loading-message, .empty-state {
+.loading-message,
+.empty-state {
   text-align: center;
   padding: var(--space-3);
   color: var(--color-text-secondary);
 }
 
 @media (prefers-color-scheme: dark) {
-  .create-label-form, .labels-list-section {
+  .create-label-form,
+  .labels-list-section {
     background-color: var(--color-background-secondary);
   }
-  
+
   .label-item {
     background-color: var(--color-gray-800);
   }
-  
+
   .color-option.active {
-    box-shadow: 0 0 0 2px var(--color-background-secondary), 0 0 0 4px var(--color-gray-500);
+    box-shadow: 0 0 0 2px var(--color-background-secondary),
+      0 0 0 4px var(--color-gray-500);
   }
 }
 </style>

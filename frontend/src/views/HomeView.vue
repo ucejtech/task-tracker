@@ -3,23 +3,24 @@ import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useTaskStore } from '../stores/taskStore';
 import TaskCard from '../components/TaskCard.vue';
+import { Task } from '../types';
 
 const router = useRouter();
 const taskStore = useTaskStore();
 
 const loading = ref(true);
-const tasks = ref([]);
+const tasks = ref<Task[]>([]);
 
 const pendingTasks = computed(() => {
-  return tasks.value.filter(task => task.status === 'pending');
+  return tasks.value.filter((task) => task.status === 'pending');
 });
 
 const inProgressTasks = computed(() => {
-  return tasks.value.filter(task => task.status === 'in-progress');
+  return tasks.value.filter((task) => task.status === 'in-progress');
 });
 
 const completedTasks = computed(() => {
-  return tasks.value.filter(task => task.status === 'completed');
+  return tasks.value.filter((task) => task.status === 'completed');
 });
 
 const totalTasks = computed(() => {
@@ -56,7 +57,7 @@ onMounted(async () => {
       <h1>Dashboard</h1>
       <button @click="createTask">New Task</button>
     </header>
-    
+
     <div class="stats-grid">
       <div class="stat-card">
         <h3>Total Tasks</h3>
@@ -75,40 +76,38 @@ onMounted(async () => {
         <div class="stat-value">{{ completedTasks.length }}</div>
       </div>
     </div>
-    
+
     <div class="completion-section">
       <div class="completion-header">
         <h2>Completion Rate</h2>
         <span class="completion-percentage">{{ completionRate }}%</span>
       </div>
       <div class="progress-container">
-        <div 
-          class="progress-bar" 
+        <div
+          class="progress-bar"
           :style="{ width: `${completionRate}%` }"
         ></div>
       </div>
     </div>
-    
+
     <div class="task-section">
       <div class="section-header">
         <h2>Recent Tasks</h2>
         <button class="secondary" @click="viewAllTasks">View All</button>
       </div>
-      
-      <div v-if="loading" class="loading-message">
-        Loading tasks...
-      </div>
-      
+
+      <div v-if="loading" class="loading-message">Loading tasks...</div>
+
       <div v-else-if="tasks.length === 0" class="empty-state">
         <p>No tasks found. Let's create some!</p>
         <button @click="createTask">Create First Task</button>
       </div>
-      
+
       <div v-else class="task-grid">
-        <TaskCard 
-          v-for="task in tasks.slice(0, 6)" 
-          :key="task.id" 
-          :task="task" 
+        <TaskCard
+          v-for="task in tasks.slice(0, 6)"
+          :key="task.id"
+          :task="task"
         />
       </div>
     </div>
@@ -140,7 +139,8 @@ onMounted(async () => {
   border-radius: var(--radius-lg);
   padding: var(--space-3);
   box-shadow: var(--shadow-sm);
-  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  transition: transform var(--transition-fast),
+    box-shadow var(--transition-fast);
 }
 
 .stat-card:hover {
@@ -245,7 +245,7 @@ onMounted(async () => {
   .stats-grid {
     grid-template-columns: repeat(2, 1fr);
   }
-  
+
   .task-grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -255,17 +255,19 @@ onMounted(async () => {
   .stats-grid {
     grid-template-columns: repeat(4, 1fr);
   }
-  
+
   .task-grid {
     grid-template-columns: repeat(3, 1fr);
   }
 }
 
 @media (prefers-color-scheme: dark) {
-  .stat-card, .completion-section, .empty-state {
+  .stat-card,
+  .completion-section,
+  .empty-state {
     background-color: var(--color-background-secondary);
   }
-  
+
   .progress-container {
     background-color: var(--color-gray-700);
   }

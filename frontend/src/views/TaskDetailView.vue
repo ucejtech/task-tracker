@@ -60,12 +60,12 @@ const priorityColor = computed(() => {
   }
 });
 
-const formatDate = (dateString) => {
+const formatDate = (dateString: string | undefined) => {
   if (!dateString) return 'Not set';
   return format(new Date(dateString), 'PPP');
 };
 
-const formatRelativeDate = (dateString) => {
+const formatRelativeDate = (dateString: string | undefined) => {
   if (!dateString) return '';
   return formatDistanceToNow(new Date(dateString), { addSuffix: true });
 };

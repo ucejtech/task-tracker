@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRouter, useRoute } from 'vue-router';
-import { ref, computed, onMounted } from 'vue';
+import { computed, onMounted } from 'vue';
 import { useLabelStore } from '../stores/labelStore';
 
 const labelStore = useLabelStore();
@@ -25,15 +25,15 @@ const navigateTo = (path: string) => {
     <div class="sidebar-section">
       <h3 class="sidebar-title">Dashboard</h3>
       <nav class="sidebar-nav">
-        <a 
-          @click.prevent="navigateTo('/')" 
+        <a
+          @click.prevent="navigateTo('/')"
           :class="['nav-link', { active: activeLink === '/' }]"
         >
           <span class="nav-icon">📊</span>
           <span>Overview</span>
         </a>
-        <a 
-          @click.prevent="navigateTo('/tasks')" 
+        <a
+          @click.prevent="navigateTo('/tasks')"
           :class="['nav-link', { active: activeLink.startsWith('/tasks') }]"
         >
           <span class="nav-icon">✓</span>
@@ -41,12 +41,12 @@ const navigateTo = (path: string) => {
         </a>
       </nav>
     </div>
-    
+
     <div class="sidebar-section">
       <h3 class="sidebar-title">
         <span>Labels</span>
-        <button 
-          @click="navigateTo('/labels')" 
+        <button
+          @click="navigateTo('/labels')"
           class="sidebar-action"
           title="Manage Labels"
         >
@@ -54,43 +54,52 @@ const navigateTo = (path: string) => {
         </button>
       </h3>
       <nav class="sidebar-nav">
-        <a 
-          v-for="label in labelStore.labels" 
+        <a
+          v-for="label in labelStore.labels"
           :key="label.id"
           @click.prevent="navigateTo(`/tasks?label=${label.id}`)"
           class="nav-link"
         >
-          <span 
-            class="color-dot" 
+          <span
+            class="color-dot"
             :style="{ backgroundColor: label.color }"
           ></span>
           <span>{{ label.name }}</span>
         </a>
       </nav>
     </div>
-    
+
     <div class="sidebar-section">
       <h3 class="sidebar-title">Status</h3>
       <nav class="sidebar-nav">
-        <a 
-          @click.prevent="navigateTo('/tasks?status=pending')" 
+        <a
+          @click.prevent="navigateTo('/tasks?status=pending')"
           class="nav-link"
         >
-          <span class="color-dot" style="background-color: var(--color-warning)"></span>
+          <span
+            class="color-dot"
+            style="background-color: var(--color-warning)"
+          ></span>
           <span>Pending</span>
         </a>
-        <a 
-          @click.prevent="navigateTo('/tasks?status=in-progress')" 
+        <a
+          @click.prevent="navigateTo('/tasks?status=in-progress')"
           class="nav-link"
         >
-          <span class="color-dot" style="background-color: var(--color-primary)"></span>
+          <span
+            class="color-dot"
+            style="background-color: var(--color-primary)"
+          ></span>
           <span>In Progress</span>
         </a>
-        <a 
-          @click.prevent="navigateTo('/tasks?status=completed')" 
+        <a
+          @click.prevent="navigateTo('/tasks?status=completed')"
           class="nav-link"
         >
-          <span class="color-dot" style="background-color: var(--color-success)"></span>
+          <span
+            class="color-dot"
+            style="background-color: var(--color-success)"
+          ></span>
           <span>Completed</span>
         </a>
       </nav>
@@ -106,7 +115,8 @@ const navigateTo = (path: string) => {
   padding: var(--space-3);
   overflow-y: auto;
   height: calc(100vh - 64px);
-  transition: transform var(--transition-normal), opacity var(--transition-normal);
+  transition: transform var(--transition-normal),
+    opacity var(--transition-normal);
 }
 
 .sidebar-section {
