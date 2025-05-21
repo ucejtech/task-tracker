@@ -28,6 +28,13 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
 
+      - name: Debug SSH connection
+        run: |
+          echo "Host: $EC2_HOST"
+          echo "Username: $EC2_USERNAME"
+          ssh -v "$EC2_USERNAME@$EC2_HOST" true
+
+
       - name: 📦 Deploy to EC2 (${{ github.ref_name }})
         run: |
           echo "🔗 Connecting to EC2 at $EC2_HOST..."
