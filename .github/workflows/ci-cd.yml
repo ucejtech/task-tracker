@@ -45,11 +45,11 @@ jobs:
           ssh -o StrictHostKeyChecking=no "$EC2_USERNAME@$EC2_HOST" <<EOF
             set -e
 
-            echo "🚀 Deploying branch $BRANCH_NAME to $EC2_HOST"
+            echo "Deploying branch $BRANCH_NAME to $EC2_HOST"
 
             cd ~/$PROJECT_DIR
 
-            echo "📥 Pulling latest code from $BRANCH_NAME"
+            echo "Pulling latest code from $BRANCH_NAME"
             git fetch origin
             git checkout $BRANCH_NAME
             git pull origin $BRANCH_NAME
@@ -58,8 +58,8 @@ jobs:
             docker-compose -f $COMPOSE_FILE down
             docker-compose -f $COMPOSE_FILE up -d --build
 
-            echo "📊 Container status:"
-            docker compose ps
+            echo "Container status:"
+            docker ps
 
-            echo "✅ Deployment to $BRANCH_NAME complete on $(date)" >> $LOG_FILE
+            echo "Deployment to $BRANCH_NAME complete on $(date)" >> $LOG_FILE
           EOF
