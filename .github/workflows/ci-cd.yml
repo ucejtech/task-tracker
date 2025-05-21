@@ -13,7 +13,7 @@ jobs:
 
     env:
       BRANCH_NAME: ${{ github.ref_name }}
-      COMPOSE_FILE: ${{ github.ref_name == 'main' && 'docker-compose-production.yml' || 'docker-compose-staging.yml' }}
+      COMPOSE_FILE: ${{ github.ref_name == 'main' && 'docker-compose.yml' || 'docker-compose-staging.yml' }}
       EC2_HOST: ${{ github.ref_name == 'main' && secrets.PRODUCTION_HOST || secrets.STAGING_HOST }}
       EC2_USERNAME: ${{ secrets.EC2_USERNAME }}
       PROJECT_DIR: Task-Tracker-Assessment-Test
