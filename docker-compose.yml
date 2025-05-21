@@ -1,12 +1,12 @@
-version: '3.8'
+version: "3.8"
 
 services:
   frontend:
     build:
-      context: .
+      context: ./frontend
       dockerfile: dockerfile
     ports:
-      - '8080:8080'
+      - "8080:8080"
     environment:
       - VITE_API_HOST=api
       - VITE_API_PORT=3001
@@ -15,9 +15,9 @@ services:
 
   api:
     build:
-      context: .
+      context: ./server
       dockerfile: dockerfile
     ports:
-      - '3001:3001'
+      - "3001:3001"
     volumes:
       - ./server/db:/app/db
