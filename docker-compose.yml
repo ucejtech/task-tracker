@@ -4,7 +4,7 @@ services:
   frontend:
     build:
       context: .
-      dockerfile: Dockerfile.frontend
+      dockerfile: dockerfile
     ports:
       - '8080:8080'
     environment:
@@ -16,7 +16,7 @@ services:
   api:
     build:
       context: .
-      dockerfile: Dockerfile.backend
+      dockerfile: dockerfile
     ports:
       - '3001:3001'
     volumes:
