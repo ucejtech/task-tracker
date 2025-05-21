@@ -16,7 +16,7 @@ jobs:
       COMPOSE_FILE: ${{ github.ref_name == 'main' && 'docker-compose-production.yml' || 'docker-compose-staging.yml' }}
       EC2_HOST: ${{ github.ref_name == 'main' && secrets.PRODUCTION_HOST || secrets.STAGING_HOST }}
       EC2_USERNAME: ${{ secrets.EC2_USERNAME }}
-      PROJECT_DIR: vue-task-tracker
+      PROJECT_DIR: Task-Tracker-Assessment-Test
       LOG_FILE: deploy-${{ github.ref_name }}.log
 
     steps:
@@ -30,12 +30,10 @@ jobs:
 
       - name: Add EC2 host to known_hosts
         run: |
-         mkdir -p ~/.ssh
-         touch ~/.ssh/known_hosts
-         chmod 600 ~/.ssh/known_hosts
-         ssh-keyscan -H "$EC2_HOST" >> ~/.ssh/known_hosts
-
-
+          mkdir -p ~/.ssh
+          touch ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/known_hosts
+          ssh-keyscan -H "$EC2_HOST" >> ~/.ssh/known_hosts
 
       - name: 📦 Deploy to EC2 (${{ github.ref_name }})
         run: |
