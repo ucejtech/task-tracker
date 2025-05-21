@@ -55,8 +55,8 @@ jobs:
             git pull origin $BRANCH_NAME
 
             echo "📦 Building and starting containers using $COMPOSE_FILE"
-            docker compose -f $COMPOSE_FILE down
-            docker compose -f $COMPOSE_FILE up -d --build
+            docker-compose -f $COMPOSE_FILE down
+            docker-compose -f $COMPOSE_FILE up -d --build
 
             echo "📊 Container status:"
             docker compose ps
